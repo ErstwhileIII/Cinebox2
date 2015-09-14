@@ -1,4 +1,31 @@
 <resources>
     <string name="app_name">Cinebox 2</string>
     <string name="title_movie_detail">Movie Detail</string>
+
+
+    <string name="action_settings">Settings</string>
+
+    <!-- for preferences -->
+    <string name="pref_movie_order_key">prefMovieOrder</string>
+    <string name="pref_movie_order_defaultvalue">popularity</string>
+    <string name="pref_movie_order_popularity">popularity</string>
+    <string name="pref_movie_order_rating">vote_average</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">in Detail Fragment</string>
+    <string name="Released">Released: </string>
+    <string name="detail_label_popularity">Popularity</string>
+    <string name="detail_label_rating">Rating</string>
+    <string name="movie_preferences">Movie preferences</string>
+    <string name="pref_movie_order_title">Movie Order</string>
+    <string name="movie_poster_generic_description">movie poster</string>
+
+    <!-- Authentication, SyncAdapter related -->
+    <string name="sync_account_type">cinebox.velocikey.com</string>
+    <string name="content_authority">com.velocikey.android.learning.cinebox.app</string>
+    <!-- Provider authority related -->
+    <string name="zAuthorityMovieInfo">com.velocikey.android.learning.cinebox.app</string>
+    <string name="pref_last_query_order">lastQueryOrder</string>
+    <string name="pref_last_query_time">lastQueried</string>
+    <string name="details_favorite_ratingbar">Favorite rating</string>
 </resources>
