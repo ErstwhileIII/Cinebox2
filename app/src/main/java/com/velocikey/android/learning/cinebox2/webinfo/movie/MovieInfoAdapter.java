@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+import com.velocikey.android.learning.cinebox2.MovieListFragment;
 import com.velocikey.android.learning.cinebox2.R;
 
 import java.util.ArrayList;
@@ -26,13 +27,13 @@ public class MovieInfoAdapter
 
     private static final int C_PosterPathWidth = 185;
     private final Context mContext;
-    private final MovieListFragment.onMovieListFragmentListener mMovieListListener;
+    private final MovieListFragment.OnMovieListFragmentListener mMovieListListener;
     private ArrayList<MovieInfo> mMovieInformation;
 
     // Object Fields
 
     public MovieInfoAdapter(Context context, ArrayList<MovieInfo> movieInfo,
-                            MovieListFragment.onMovieListFragmentListener listener) {
+                            MovieListFragment.OnMovieListFragmentListener listener) {
         Log.v(LOG_TAG, "-->Constructor");
         mContext = context;
         mMovieInformation = movieInfo;

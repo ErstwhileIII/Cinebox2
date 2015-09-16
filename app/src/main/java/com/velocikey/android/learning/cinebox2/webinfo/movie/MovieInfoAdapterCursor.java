@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+import com.velocikey.android.learning.cinebox2.MovieListFragment;
 import com.velocikey.android.learning.cinebox2.R;
 import com.velocikey.android.learning.cinebox2.webinfo.movie.data.MovieContract;
 
@@ -27,7 +28,7 @@ public class MovieInfoAdapterCursor
     // Object fields
 
     private final Context mContext;
-    private final MovieListFragment.onMovieListFragmentListener mMovieListListener;
+    private final MovieListFragment.OnMovieListFragmentListener mMovieListListener;
     private Cursor mCursor;
     // Data source information .. for database cursor
     private int mColumnId;
@@ -42,7 +43,7 @@ public class MovieInfoAdapterCursor
 
     public MovieInfoAdapterCursor(Context context,
                                   Cursor c,
-                                  MovieListFragment.onMovieListFragmentListener listener) {
+                                  MovieListFragment.OnMovieListFragmentListener listener) {
         Log.v(LOG_TAG, "-->Constructor:");
         // Retain context
         mContext = context;
@@ -111,7 +112,7 @@ public class MovieInfoAdapterCursor
 
     public void swapCursor(Cursor cursor) {
 //        Log.v(LOG_TAG, "-->swapCursor: ");
-        if (mCursor == cursor) {
+        if (mCursor != null && mCursor == cursor) {
             return; // same cursor, nothing to do.
         }
         final Cursor oldCursor = mCursor;

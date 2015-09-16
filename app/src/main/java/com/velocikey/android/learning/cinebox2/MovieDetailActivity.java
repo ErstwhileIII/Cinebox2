@@ -2,12 +2,9 @@ package com.velocikey.android.learning.cinebox2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 /**
  * An activity representing a single Movie detail screen. This
@@ -16,28 +13,32 @@ import android.view.View;
  * in a {@link MovieListActivity}.
  * <p/>
  * This activity is mostly just a 'shell' activity containing nothing
- * more than a {@link MovieDetailFragment}.
+ * more than a {@link MovieDetailFragmentX}.
  */
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity
+        implements MovieDetailFragment.OnMovieDetailFragmentListener {
+    // Class fields
+    private static final String LOG_TAG = MovieDetailActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
+        Log.v(LOG_TAG, "-->onCreate");
+        setContentView(R.layout.fragment_movie_detail);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+//        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         // Show the Up button in the action bar.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -52,8 +53,18 @@ public class MovieDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(MovieDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(MovieDetailFragment.ARG_ITEM_ID));
+//            arguments.putString(MovieDetailFragment.ARG_movieId,
+//                    getIntent().getStringExtra(MovieDetailFragment.ARG_movieId));
+//            arguments
+
+            arguments.putInt(MovieDetailFragment.ARG_movieId, getIntent().getIntExtra(MovieDetailFragment.ARG_movieId, -1));
+            arguments.putString(MovieDetailFragment.ARG_title, getIntent().getStringExtra(MovieDetailFragment.ARG_title));
+            arguments.putString(MovieDetailFragment.ARG_releaseDate, getIntent().getStringExtra(MovieDetailFragment.ARG_releaseDate));
+            arguments.putFloat(MovieDetailFragment.ARG_popularity, getIntent().getFloatExtra(MovieDetailFragment.ARG_popularity, 0.0F));
+            arguments.putFloat(MovieDetailFragment.ARG_rating, getIntent().getFloatExtra(MovieDetailFragment.ARG_rating, 0.0F));
+            arguments.putString(MovieDetailFragment.ARG_overview, getIntent().getStringExtra(MovieDetailFragment.ARG_overview));
+            arguments.putString(MovieDetailFragment.ARG_posterPath, getIntent().getStringExtra(MovieDetailFragment.ARG_posterPath));
+
             MovieDetailFragment fragment = new MovieDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -76,5 +87,10 @@ public class MovieDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onMovieDetailFragmentInteraction(String action) {
+        Log.v(LOG_TAG, "-->onMovieDetailFragmentInteraction");
     }
 }

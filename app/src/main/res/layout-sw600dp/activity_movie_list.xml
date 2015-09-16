@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/movie_list"
-        android:name="com.velocikey.android.learning.cinebox2.MovieListFragment"
+        android:name="com.velocikey.android.learning.cinebox2.MovieListFragmentX"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
