@@ -24,7 +24,9 @@ import android.util.Log;
 public class MovieProvider extends ContentProvider {
     // Provider URI definition information
     public final static int MOVIE_LIST = 100;
-    public final static int MOVIE_ID = 101;
+    public final static int MOVIE_LIST_ID = 101;
+    public final static int MOVIE_FAVORITE = 200;
+    public final static int MOVIE_FAVORITE_ID = 201;
     // Class fields
     private static final String LOG_TAG = MovieProvider.class.getSimpleName();
     /*
@@ -34,7 +36,9 @@ public class MovieProvider extends ContentProvider {
 
     static {
         sUriMatcher.addURI(MovieContract.CONTENT_AUTHORITY, MovieContract.PATH_MOVIE, MOVIE_LIST);
-        sUriMatcher.addURI(MovieContract.CONTENT_AUTHORITY, MovieContract.PATH_MOVIE + "/#", MOVIE_ID);
+        sUriMatcher.addURI(MovieContract.CONTENT_AUTHORITY, MovieContract.PATH_MOVIE + "/#", MOVIE_LIST_ID);
+        sUriMatcher.addURI(MovieContract.CONTENT_AUTHORITY, MovieContract.PATH_MOVIE_FAVORITE, MOVIE_FAVORITE);
+        sUriMatcher.addURI(MovieContract.CONTENT_AUTHORITY, MovieContract.PATH_MOVIE_FAVORITE + "/#", MOVIE_FAVORITE_ID);
     }
 
     private MovieDBHelper mMovieDBHelper;
@@ -139,7 +143,7 @@ public class MovieProvider extends ContentProvider {
                 //TODO use a static builder rather than recreating for each query
                 builder.setTables(MovieContract.MovieEntry.TABLE_NAME);
                 break;
-            case MOVIE_ID:
+            case MOVIE_LIST_ID:
                 builder.setTables(MovieContract.MovieEntry.TABLE_NAME);
                 builder.appendWhere(MovieContract.MovieEntry._ID + " = " + uri.getLastPathSegment());
                 break;
@@ -164,7 +168,7 @@ public class MovieProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
             case MOVIE_LIST:
                 return MovieContract.MovieEntry.CONTENT_TYPE;
-            case MOVIE_ID:
+            case MOVIE_LIST_ID:
                 return MovieContract.MovieEntry.CONTENT_ITEM_TYPE;
             default:
                 return null;
@@ -218,6 +222,7 @@ public class MovieProvider extends ContentProvider {
     @Override
     public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         Log.d(LOG_TAG, "bulkInsert, mMovieDBHelper is null? " + (mMovieDBHelper == null));
+        Log.d(LOG_TAG, " .. uri is " + uri.toString());
         final SQLiteDatabase db = mMovieDBHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
 
@@ -278,7 +283,7 @@ public class MovieProvider extends ContentProvider {
             case MOVIE_LIST:
                 deletedRows = db.delete(MovieContract.MovieEntry.TABLE_NAME, selection, selectionArgs);
                 break;
-            case MOVIE_ID:
+            case MOVIE_LIST_ID:
                 //TODO consider merging seleciton of _id with other where clause elements
                 deletedRows = db.delete(MovieContract.MovieEntry.TABLE_NAME,
                         MovieContract.MovieEntry._ID + " = " + uri.getLastPathSegment(), null);
@@ -287,6 +292,7 @@ public class MovieProvider extends ContentProvider {
                 Log.e(LOG_TAG, "query: unsupported URI " + uri);
                 deletedRows = 0;
         }
+        db.close();
         return deletedRows;
     }
 
@@ -319,7 +325,7 @@ public class MovieProvider extends ContentProvider {
                 rowsAffected = db.update(MovieContract.MovieEntry.TABLE_NAME,
                         values, whereClause, whereArgs);
                 break;
-            case MOVIE_ID:
+            case MOVIE_LIST_ID:
                 //TODO consider merging seleciton of _id with other where clause elements
                 rowsAffected = db.update(MovieContract.MovieEntry.TABLE_NAME,
                         values, MovieContract.MovieEntry._ID + " = " + uri.getLastPathSegment(), null);
@@ -328,7 +334,7 @@ public class MovieProvider extends ContentProvider {
                 Log.e(LOG_TAG, "query: unsupported URI " + uri);
                 rowsAffected = 0;
         }
-
+        db.close();
         return rowsAffected;
     }
 

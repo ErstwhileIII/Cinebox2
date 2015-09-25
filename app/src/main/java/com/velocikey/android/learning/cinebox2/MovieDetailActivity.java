@@ -13,7 +13,7 @@ import android.view.MenuItem;
  * in a {@link MovieListActivity}.
  * <p/>
  * This activity is mostly just a 'shell' activity containing nothing
- * more than a {@link MovieDetailFragmentX}.
+ * more than a {@link MovieDetailFragment}.
  */
 public class MovieDetailActivity extends AppCompatActivity
         implements MovieDetailFragment.OnMovieDetailFragmentListener {
@@ -24,7 +24,7 @@ public class MovieDetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(LOG_TAG, "-->onCreate");
-        setContentView(R.layout.fragment_movie_detail);
+        setContentView(R.layout.activity_movie_detail);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -49,14 +49,14 @@ public class MovieDetailActivity extends AppCompatActivity
         //
         // http://developer.android.com/guide/components/fragments.html
         //
+
+        Bundle extras = getIntent().getExtras();
+        Log.v(LOG_TAG, "Extras count is " + extras.size());
+        Log.v(LOG_TAG, " savedInstanceState null? " + (savedInstanceState == null));
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            Bundle arguments = new Bundle();
-//            arguments.putString(MovieDetailFragment.ARG_movieId,
-//                    getIntent().getStringExtra(MovieDetailFragment.ARG_movieId));
-//            arguments
-
+            Bundle arguments = new Bundle(extras.size());
             arguments.putInt(MovieDetailFragment.ARG_movieId, getIntent().getIntExtra(MovieDetailFragment.ARG_movieId, -1));
             arguments.putString(MovieDetailFragment.ARG_title, getIntent().getStringExtra(MovieDetailFragment.ARG_title));
             arguments.putString(MovieDetailFragment.ARG_releaseDate, getIntent().getStringExtra(MovieDetailFragment.ARG_releaseDate));
@@ -70,6 +70,8 @@ public class MovieDetailActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.movie_detail_container, fragment)
                     .commit();
+        } else {
+            Log.v(LOG_TAG, " in else with savedInstanceState not null");
         }
     }
 
@@ -91,6 +93,11 @@ public class MovieDetailActivity extends AppCompatActivity
 
     @Override
     public void onMovieDetailFragmentInteraction(String action) {
-        Log.v(LOG_TAG, "-->onMovieDetailFragmentInteraction");
+        Log.v(LOG_TAG, "-->onMovieDetailFragmentInteraction(action) " + action);
+    }
+
+    @Override
+    public void onMovieDetailFragmentInteraction(int trailer, int review) {
+        Log.v(LOG_TAG, "-->onMovieDetailFragmentInteraction(trailer, review) " + trailer + ", " + review);
     }
 }

@@ -12,9 +12,12 @@ import android.provider.BaseColumns;
  */
 public class MovieContract {
     // Information needed for corresponding Provider
-    //TODO how to put authority into string reference a\
+    //TODO how to put authority into string reference ??
     public static final String CONTENT_AUTHORITY = "com.velocikey.android.learning.cinebox.app";
     public static final String PATH_MOVIE = "movie";
+    public static final String PATH_MOVIE_FAVORITE = "moviefavorite";
+    public static final String PATH_MOVIE_VIDEO = "movievideo";
+    public static final String PATH_MOVIE_REVIEW = "moviereview";
     // Class fields
     private static final String LOG_TAG = MovieContract.class.getSimpleName();
     private static final Uri CONTENT_URI_BASE = Uri.parse("content://" + CONTENT_AUTHORITY);
@@ -36,16 +39,20 @@ public class MovieContract {
         public static final String COL_releaseDate = "release_date";
         public static final String COL_popularity = "popularity";
         public static final String COL_rating = "rating";
+        public static final String COL_favorite = "favorite";
         public static final String COL_posterPath = "poster_path";
         public static final String COL_overview = "overview";
 
+        public static Uri buildMovieUri() {
+            return CONTENT_URI;
+        }
         public static Uri buildMovieUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
 
     public static final class MovieFavorite implements BaseColumns {
-        public static final String PATH = "moviefavorite";
+        public static final String PATH = PATH_MOVIE_FAVORITE;
         // information for Provider to use
         public static final Uri CONTENT_URI =
                 CONTENT_URI_BASE.buildUpon().appendPath(PATH).build();
@@ -56,14 +63,14 @@ public class MovieContract {
 
         // Database information for Movie information table and column definition
         public static final String TABLE_NAME = "movie_favorite";
-        public static final String COL_id = BaseColumns._ID;
-        public static final String COL_title = "title";
-        public static final String COL_releaseDate = "release_date";
-        public static final String COL_popularity = "popularity";
-        public static final String COL_rating = "rating";
-        public static final String COL_posterPath = "poster_path";
-        public static final String COL_overview = "overview";
+        public static final String VIEW_NAME = "movie_favorite_view";
 
+        public static final String COL_id = BaseColumns._ID;
+        public static final String COL_favorite = "favorite";
+
+        public static Uri buildMovieUri() {
+            return CONTENT_URI;
+        }
         public static Uri buildMovieUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
@@ -98,7 +105,20 @@ public class MovieContract {
 
 
          */
-        public static final String TABLE_NAME = "videos";
+        public static final String PATH = PATH_MOVIE_VIDEO;
+        public static final String TABLE_NAME = "movie_videos";
+
+        // information for Provider to use
+        public static final Uri CONTENT_URI =
+                CONTENT_URI_BASE.buildUpon().appendPath(PATH).build();
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH;
+
+        /**
+         * Unique
+         */
         public static final String COL_id = BaseColumns._ID;
         public static final String COL_movie_id = "movie_id";
         public static final String COL_language = "language";

@@ -87,22 +87,22 @@ public class MovieInfoAdapter
         Log.v(LOG_TAG, "-->onDetachedFromRecyclerView");
     }
 
-    /**
-     * Set the movie information to a new array;
-     *
-     * @param movieInformation the
-     */
-    public void setMovie(ArrayList<MovieInfo> movieInformation) {
-        Log.v(LOG_TAG, "-->setMovie");
-        if (mMovieInformation == null || mMovieInformation.size() == 0) {
-            mMovieInformation = movieInformation;
-            this.notifyDataSetChanged();
-        } else {
-            //TODO better way to handle extensions?
-            mMovieInformation = movieInformation;
-            this.notifyItemRangeChanged(0, movieInformation.size());
-        }
-    }
+//    /**
+//     * Set the movie information to a new array;
+//     *
+//     * @param movieInformation the
+//     */
+//    public void setMovie(ArrayList<MovieInfo> movieInformation) {
+//        Log.v(LOG_TAG, "-->setMovie");
+//        if (mMovieInformation == null || mMovieInformation.size() == 0) {
+//            mMovieInformation = movieInformation;
+//            this.notifyDataSetChanged();
+//        } else {
+//            //TODO better way to handle extensions?
+//            mMovieInformation = movieInformation;
+//            this.notifyItemRangeChanged(0, movieInformation.size());
+//        }
+//    }
 
 
     // Inner ViewHolder class

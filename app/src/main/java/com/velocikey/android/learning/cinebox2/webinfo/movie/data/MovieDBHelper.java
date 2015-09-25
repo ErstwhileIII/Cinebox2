@@ -15,7 +15,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
     // Class fields
     private static final String LOG_TAG = MovieDBHelper.class.getSimpleName();
     // Database information
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 8;
     private static final String CreateMovieinfoTable =
             "CREATE TABLE " + MovieContract.MovieEntry.TABLE_NAME + " (" +
                     MovieContract.MovieEntry.COL_id + " INTEGER PRIMARY KEY ON CONFLICT REPLACE, " +
@@ -23,9 +23,34 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                     MovieContract.MovieEntry.COL_releaseDate + " TEXT NOT NULL, " +
                     MovieContract.MovieEntry.COL_popularity + " REAL NOT NULL, " +
                     MovieContract.MovieEntry.COL_rating + " REAL NOT NULL, " +
+                    MovieContract.MovieEntry.COL_favorite + " INTEGER, " +
                     MovieContract.MovieEntry.COL_posterPath + " TEXT NOT NULL, " +
                     MovieContract.MovieEntry.COL_overview + " TEXT NOT NULL " +
                     ");";
+    private static final String CreateMovieFavoriteTable =
+            "CREATE TABLE " + MovieContract.MovieFavorite.TABLE_NAME + " (" +
+                    MovieContract.MovieFavorite.COL_id + " INTEGER PRIMARY KEY ON CONFLICT REPLACE, " +
+                    MovieContract.MovieFavorite.COL_favorite + " INTEGER " +
+                    ");";
+    private static final String CreateMovieFavoriteView =
+            "CREATE VIEW " + MovieContract.MovieFavorite.VIEW_NAME +
+                    " AS SELECT " +
+                    MovieContract.MovieEntry.TABLE_NAME + "." + MovieContract.MovieEntry.COL_id + ", " +
+                    MovieContract.MovieEntry.COL_title + ", " +
+                    MovieContract.MovieEntry.COL_releaseDate + ", " +
+                    MovieContract.MovieEntry.COL_popularity + ", " +
+                    MovieContract.MovieEntry.COL_rating + ", " +
+                    MovieContract.MovieFavorite.TABLE_NAME + "." + MovieContract.MovieEntry.COL_favorite + ", " +
+                    MovieContract.MovieEntry.COL_posterPath + ", " +
+                    MovieContract.MovieEntry.COL_overview +
+                    " FROM " + MovieContract.MovieEntry.TABLE_NAME +
+                    " LEFT OUTER JOIN " + MovieContract.MovieFavorite.TABLE_NAME +
+                    " ON " + MovieContract.MovieEntry.TABLE_NAME + "." +
+                    MovieContract.MovieEntry.COL_id +
+                    " = " +
+                    MovieContract.MovieFavorite.TABLE_NAME + "." +
+                    MovieContract.MovieFavorite.COL_id;
+
     private static final String CreateMovieVideoTable =
             "CREATE TABLE " + MovieContract.MovieVideo.TABLE_NAME + " (" +
                     MovieContract.MovieVideo.COL_id + " INTEGER PRIMARY KEY ON CONFLICT REPLACE, " +
@@ -53,7 +78,13 @@ public class MovieDBHelper extends SQLiteOpenHelper {
         //TODO use utility method to create the table statement
 
         Log.v(LOG_TAG, "-->onCreate: ");
+        Log.v(LOG_TAG, "Movie: " + CreateMovieinfoTable);
         db.execSQL(CreateMovieinfoTable);
+        Log.v(LOG_TAG, "Movie Favorite: " + CreateMovieFavoriteTable);
+        db.execSQL(CreateMovieFavoriteTable);
+        Log.v(LOG_TAG, "Movie Favorite view: " + CreateMovieFavoriteView);
+        db.execSQL(CreateMovieFavoriteView);
+        Log.v(LOG_TAG, "Video: " + CreateMovieVideoTable);
         db.execSQL(CreateMovieVideoTable);
     }
 
@@ -62,8 +93,10 @@ public class MovieDBHelper extends SQLiteOpenHelper {
         //TODO currently just drop and recreate the database on version change
         Log.v(LOG_TAG, "-->onUpgrade from " + oldVersion + " to " + newVersion);
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieEntry.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieVideo.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieFavorite.TABLE_NAME);
+        db.execSQL("DROP VIEW IF EXISTS " + MovieContract.MovieFavorite.VIEW_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieVideo.TABLE_NAME);
+        //db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieFavorite.TABLE_NAME);
         onCreate(db);
     }
 
@@ -72,8 +105,10 @@ public class MovieDBHelper extends SQLiteOpenHelper {
         //TODO currently just drop and recreate the database on version change
         Log.v(LOG_TAG, "-->onDowngrade from " + oldVersion + " to " + newVersion);
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieEntry.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieVideo.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieFavorite.TABLE_NAME);
+        db.execSQL("DROP VIEW IF EXISTS " + MovieContract.MovieFavorite.VIEW_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieVideo.TABLE_NAME);
+        //db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieFavorite.TABLE_NAME);
         onCreate(db);
     }
 }

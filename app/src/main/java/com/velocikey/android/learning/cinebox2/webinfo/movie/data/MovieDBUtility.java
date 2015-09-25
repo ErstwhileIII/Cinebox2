@@ -28,6 +28,7 @@ public class MovieDBUtility {
         movieValues.put(MovieContract.MovieEntry.COL_releaseDate, movieInfo.getReleaseDate());
         movieValues.put(MovieContract.MovieEntry.COL_popularity, movieInfo.getPopularity());
         movieValues.put(MovieContract.MovieEntry.COL_rating, movieInfo.getRating());
+        movieValues.put(MovieContract.MovieEntry.COL_favorite, movieInfo.getFavorite());
         movieValues.put(MovieContract.MovieEntry.COL_posterPath, movieInfo.getPosterPath());
         movieValues.put(MovieContract.MovieEntry.COL_overview, movieInfo.getOverview());
         return movieValues;

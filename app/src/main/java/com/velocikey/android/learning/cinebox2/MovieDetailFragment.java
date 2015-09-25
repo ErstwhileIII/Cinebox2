@@ -1,6 +1,7 @@
 package com.velocikey.android.learning.cinebox2;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -27,7 +28,6 @@ import com.velocikey.android.learning.cinebox2.webinfo.movie.data.MovieContract;
  */
 public class MovieDetailFragment extends Fragment
         implements RatingBar.OnRatingBarChangeListener {
-    // Class fields
     //TODO consider passing position sql database)
     public static final String ARG_movieId = MovieContract.MovieEntry.COL_id;
     public static final String ARG_title = MovieContract.MovieEntry.COL_title;
@@ -35,6 +35,7 @@ public class MovieDetailFragment extends Fragment
     public static final String ARG_overview = MovieContract.MovieEntry.COL_overview;
     public static final String ARG_popularity = MovieContract.MovieEntry.COL_popularity;
     public static final String ARG_rating = MovieContract.MovieEntry.COL_rating;
+    public static final String ARG_favorite = MovieContract.MovieEntry.COL_favorite;
     public static final String ARG_posterPath = MovieContract.MovieEntry.COL_posterPath;
     public static final String TAG_MOVIE_DETAIL_FRAGMENT = "MovieDetail";
     // Class fields
@@ -47,6 +48,7 @@ public class MovieDetailFragment extends Fragment
     private static String overview;
     private static Float popularity;
     private static Float rating;
+    private static Float favorite;
     private static String posterPath;
 
     private OnMovieDetailFragmentListener mListener;
@@ -64,6 +66,7 @@ public class MovieDetailFragment extends Fragment
         overview = movieInfo.getOverview();
         popularity = movieInfo.getPopularity();
         rating = movieInfo.getRating();
+        favorite = movieInfo.getFavorite();
         posterPath = movieInfo.getOverview();
         return fragment;
     }
@@ -99,6 +102,7 @@ public class MovieDetailFragment extends Fragment
             popularity = getArguments().getFloat(ARG_popularity);
             rating = getArguments().getFloat(ARG_rating);
             posterPath = getArguments().getString(ARG_posterPath);
+            Log.v(LOG_TAG, " title=" + title);
         }
 
         if (savedInstanceState == null) {
@@ -121,13 +125,18 @@ public class MovieDetailFragment extends Fragment
         Log.v(LOG_TAG, "-->onCreateView:");
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
+        Log.v(LOG_TAG, "title is " + title);
 
-        ((TextView) rootView.findViewById(R.id.detail_title)).setText("" + title);
-        ((TextView) rootView.findViewById(R.id.detail_release_date)).setText("" + releaseDate);
+        ((TextView) rootView.findViewById(R.id.detail_title)).setText(title);
+        ((TextView) rootView.findViewById(R.id.detail_release_date)).setText(releaseDate);
         ((TextView) rootView.findViewById(R.id.detail_popularity)).setText("" + popularity);
         ((TextView) rootView.findViewById(R.id.detail_rating)).setText("" + rating);
-        ((TextView) rootView.findViewById(R.id.detail_overview)).setText("" + overview);
-        ((RatingBar) rootView.findViewById(R.id.favoriteBar)).setOnRatingBarChangeListener(this);
+        ((TextView) rootView.findViewById(R.id.detail_overview)).setText(overview);
+        RatingBar favoriteView = (RatingBar) rootView.findViewById(R.id.favoriteBar);
+        favoriteView.setOnRatingBarChangeListener(this);
+        if (favorite != null) {
+            favoriteView.setRating(favorite);
+        }
 
         ImageView poster = (ImageView) rootView.findViewById(R.id.detail_poster);
         if (posterPath != null) {
@@ -186,7 +195,21 @@ public class MovieDetailFragment extends Fragment
         if (fromUser && ratingBar.getId() == R.id.favoriteBar) {
             //TODO change user favorite rating
             Log.v(LOG_TAG, "New user rating is: " + rating);
+            ContentValues changeRating = new ContentValues();
+            changeRating.put(MovieContract.MovieEntry.COL_rating, rating);
+            String[] whereClause = new String[1];
+            whereClause[0] = Integer.toString(movieId);
 
+            //Uri uri = Uri.parse("content://" + MovieContract.CONTENT_AUTHORITY + "/" + MovieContract.PATH_MOVIE + "/" + movieId);
+            Uri uri = MovieContract.MovieEntry.buildMovieUri(movieId);
+            Log.v(LOG_TAG, " ... try update using " + uri.toString());
+            int numRows = getActivity().getContentResolver().update(uri,
+                    changeRating,
+                    MovieContract.MovieEntry.COL_id,
+                    whereClause
+            );
+            Log.v(LOG_TAG, " ... rows updated count=" + numRows);
+            //TODO trigger a "requery"
         }
     }
 
@@ -203,5 +226,7 @@ public class MovieDetailFragment extends Fragment
     public interface OnMovieDetailFragmentListener {
         // TODO: Update argument type and name
         void onMovieDetailFragmentInteraction(String action);
+
+        void onMovieDetailFragmentInteraction(int trailer, int review);
     }
 }

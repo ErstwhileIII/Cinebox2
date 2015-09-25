@@ -17,14 +17,28 @@ public class MovieInfo {
     private final float rating;
     private final String posterPath;
     private final String overview;
+    private Float favorite;
 
-    public MovieInfo(int movieId, String title, String releaseDate, float popularity, float rating
-            , String posterPath, String overview) {
+    public MovieInfo(int movieId, String title, String releaseDate, float popularity,
+                     float rating, float favorite, String posterPath, String overview) {
         this.movieId = movieId;
         this.title = title;
         this.releaseDate = releaseDate;
         this.popularity = popularity;
         this.rating = rating;
+        this.favorite = favorite;
+        this.posterPath = posterPath;
+        this.overview = overview;
+    }
+
+    public MovieInfo(int movieId, String title, String releaseDate, float popularity, float rating, String posterPath, String overview) {
+        //TODO how to handle so favorite is not eliminated
+        this.movieId = movieId;
+        this.title = title;
+        this.releaseDate = releaseDate;
+        this.popularity = popularity;
+        this.rating = rating;
+        this.favorite = favorite;
         this.posterPath = posterPath;
         this.overview = overview;
     }
@@ -47,6 +61,10 @@ public class MovieInfo {
 
     public Float getRating() {
         return rating;
+    }
+
+    public Float getFavorite() {
+        return favorite;
     }
 
     public String getPosterPath() {
@@ -103,6 +121,7 @@ public class MovieInfo {
         }
         return "https://image.tmdb.org/t/p/" + sizeName + thePosterPath;
     }
+
 
     //TODO add equals and hashcode overrides
 

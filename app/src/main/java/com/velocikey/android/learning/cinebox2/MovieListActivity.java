@@ -19,11 +19,11 @@ import com.velocikey.android.learning.cinebox2.webinfo.movie.MovieInfo;
  * item details side-by-side using two vertical panes.
  * <p/>
  * The activity makes heavy use of fragments. The list of items is a
- * {@link MovieListFragmentX} and the item details
- * (if present) is a {@link MovieDetailFragmentX}.
+ * {@link MovieListFragment} and the item details
+ * (if present) is a {@link MovieDetailFragment}.
  * <p/>
  * This activity also implements the required
- * {@link MovieListFragmentX.Callbacks} interface
+ * {@link com.velocikey.android.learning.cinebox2.MovieListFragment.OnMovieListFragmentListener} interface
  * to listen for item selections.
  */
 public class MovieListActivity extends AppCompatActivity
@@ -31,6 +31,7 @@ public class MovieListActivity extends AppCompatActivity
     // Class fields
     private static final String LOG_TAG = MovieListActivity.class.getSimpleName();
     // Object fields
+    MovieInfo mMovieInfo = null;
 
     /**
      * Is the activity runnng where two panes are visible?
@@ -70,9 +71,9 @@ public class MovieListActivity extends AppCompatActivity
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
             //TODO switch to cinebox movie list
-            ((MovieListFragmentX) getSupportFragmentManager()
-                    .findFragmentById(R.id.movie_list))
-                    .setActivateOnItemClick(true);
+//            ((MovieListFragment) getSupportFragmentManager()
+//                    .findFragmentById(R.id.movie_list))
+//                    .setActivateOnItemClick(true);
         }
 
         // TODO: If exposing deep links into your app, handle intents here.
@@ -111,22 +112,35 @@ public class MovieListActivity extends AppCompatActivity
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        Log.v(LOG_TAG, "-->onSaveInstanceState");
+        Log.v(LOG_TAG, "-->onSaveInstanceState (" + savedInstanceState.size() + ")");
+        setMovieDetailArguments(savedInstanceState, mMovieInfo);
+    }
+
+    /**
+     * @param args
+     */
+    private void setMovieDetailArguments(Bundle args, MovieInfo movieInfo) {
+        if (movieInfo != null) {
+            args.putInt(MovieDetailFragment.ARG_movieId, movieInfo.getMovieId());
+            args.putString(MovieDetailFragment.ARG_title, movieInfo.getTitle());
+            args.putString(MovieDetailFragment.ARG_releaseDate, movieInfo.getReleaseDate());
+            args.putFloat(MovieDetailFragment.ARG_popularity, movieInfo.getPopularity());
+            args.putFloat(MovieDetailFragment.ARG_rating, movieInfo.getRating());
+            args.putFloat(MovieDetailFragment.ARG_favorite, movieInfo.getFavorite());
+            args.putString(MovieDetailFragment.ARG_overview, movieInfo.getOverview());
+            args.putString(MovieDetailFragment.ARG_posterPath, movieInfo.getFullPosterPath(300));
+        }
     }
 
     // Methods called from fragments
     @Override
     public void onMovieListFragmentInteraction(MovieInfo movieInfo) {
+        mMovieInfo = movieInfo;
         Log.v(LOG_TAG, "-->onMovieListFragmentInteraction");
+        Log.v(LOG_TAG, " .. " + movieInfo.getTitle());
 
         Bundle args = new Bundle();
-        args.putInt(MovieDetailFragment.ARG_movieId, movieInfo.getMovieId());
-        args.putString(MovieDetailFragment.ARG_title, movieInfo.getTitle());
-        args.putString(MovieDetailFragment.ARG_releaseDate, movieInfo.getReleaseDate());
-        args.putFloat(MovieDetailFragment.ARG_popularity, movieInfo.getPopularity());
-        args.putFloat(MovieDetailFragment.ARG_rating, movieInfo.getRating());
-        args.putString(MovieDetailFragment.ARG_overview, movieInfo.getOverview());
-        args.putString(MovieDetailFragment.ARG_posterPath, movieInfo.getFullPosterPath(300));
+        setMovieDetailArguments(args, mMovieInfo);
 
         if (isTwoPane) {
             MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
@@ -136,7 +150,7 @@ public class MovieListActivity extends AppCompatActivity
                     .commit();
         } else {
             Intent detailIntent = new Intent(this, MovieDetailActivity.class);
-            detailIntent.putExtra("Movie Info", args);
+            detailIntent.putExtras(args);
             startActivity(detailIntent);
         }
     }

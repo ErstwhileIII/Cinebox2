@@ -36,6 +36,7 @@ public class MovieInfoAdapterCursor
     private int mColumnReleaseDate;
     private int mColumnPopularity;
     private int mColumnRating;
+    private int mColumnFavorite;
     private int mColumnPosterPath;
     private int mColumnOverview;
     private boolean isDataValid;
@@ -70,6 +71,7 @@ public class MovieInfoAdapterCursor
         mColumnReleaseDate = mCursor.getColumnIndexOrThrow(MovieContract.MovieEntry.COL_releaseDate);
         mColumnPopularity = mCursor.getColumnIndexOrThrow(MovieContract.MovieEntry.COL_popularity);
         mColumnRating = mCursor.getColumnIndexOrThrow(MovieContract.MovieEntry.COL_rating);
+        mColumnFavorite = mCursor.getColumnIndexOrThrow(MovieContract.MovieEntry.COL_favorite);
         mColumnPosterPath = mCursor.getColumnIndexOrThrow(MovieContract.MovieEntry.COL_posterPath);
         mColumnOverview = mCursor.getColumnIndexOrThrow(MovieContract.MovieEntry.COL_overview);
     }
@@ -164,7 +166,7 @@ public class MovieInfoAdapterCursor
     @Override
     public long getItemId(int position) {
         long result;
-        //TODO if this class is extneded to handle headers and footers we will need to change
+        //TODO if this class is extended to handle headers and footers we will need to change
         if (isDataValid && mCursor.moveToPosition(position)) {
             result = mCursor.getLong(mColumnId);
         } else {
@@ -224,11 +226,12 @@ public class MovieInfoAdapterCursor
             String releaseDate = mCursor.getString(mColumnReleaseDate);
             Float popularity = mCursor.getFloat(mColumnPopularity);
             Float rating = mCursor.getFloat(mColumnRating);
+            Float favorite = mCursor.getFloat(mColumnFavorite);
             String posterPath = mCursor.getString(mColumnPosterPath);
             String overview = mCursor.getString(mColumnOverview);
 
             MovieInfo movieInfo = new MovieInfo(id, title, releaseDate, popularity, rating,
-                    posterPath, overview);
+                    favorite, posterPath, overview);
 
             Log.v(LOG_TAG, "returning movie information from position: " + position);
             //TODO consider returning position instead

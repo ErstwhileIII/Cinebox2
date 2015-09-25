@@ -168,14 +168,7 @@ public class MovieListFragment extends Fragment
 
         if (isStale || isNewOrder) {
             mMovieOrder = prefOrder;
-            //TODO replace with count of rows in database
-            if (lastQueryTime > 0) {
-//                Log.v(LOG_TAG, "getMovies: delete all rows");
-//                int deletedRows = this.getActivity().getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, "1", null);
-//                Log.v(LOG_TAG, "Rows deleted count = " + deletedRows);
-                Log.v(LOG_TAG, "rows NOT deleted");
-            }
-            //String movieOrder = preferences.getString(getString(R.string.pref_movie_order_key), getString(R.string.pref_movie_order_defaultvalue));
+
             Log.v(LOG_TAG, "Requested movie order is: " + mMovieOrder);
             //TODO see if we need to handle interruption between start and finish
 
@@ -448,6 +441,7 @@ public class MovieListFragment extends Fragment
                 MovieContract.MovieEntry.COL_releaseDate,
                 MovieContract.MovieEntry.COL_popularity,
                 MovieContract.MovieEntry.COL_rating,
+                MovieContract.MovieEntry.COL_favorite,
                 MovieContract.MovieEntry.COL_posterPath,
                 MovieContract.MovieEntry.COL_overview};
 
@@ -460,6 +454,8 @@ public class MovieListFragment extends Fragment
             prefOrder = MovieContract.MovieEntry.COL_popularity + " DESC";
         } else if (order.equalsIgnoreCase(getString(R.string.pref_movie_order_rating))) {
             prefOrder = MovieContract.MovieEntry.COL_rating + " DESC";
+        } else if (order.equalsIgnoreCase(getString(R.string.pref_movie_favorite))) {
+            prefOrder = MovieContract.MovieEntry.COL_favorite + " DESC";
         }
 
         return new CursorLoader(getActivity(),
