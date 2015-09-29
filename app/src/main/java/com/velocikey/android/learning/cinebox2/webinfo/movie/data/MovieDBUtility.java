@@ -3,6 +3,7 @@ package com.velocikey.android.learning.cinebox2.webinfo.movie.data;
 import android.content.ContentValues;
 
 import com.velocikey.android.learning.cinebox2.webinfo.movie.MovieInfo;
+import com.velocikey.android.learning.cinebox2.webinfo.movie.MovieReviewInfo;
 import com.velocikey.android.learning.cinebox2.webinfo.movie.MovieVideoInfo;
 
 /**
@@ -22,27 +23,38 @@ public class MovieDBUtility {
      * @return all movie information in a ContentValues object
      */
     public static ContentValues getMovieValues(MovieInfo movieInfo) {
-        ContentValues movieValues = new ContentValues();
-        movieValues.put(MovieContract.MovieEntry.COL_id, movieInfo.getMovieId());
-        movieValues.put(MovieContract.MovieEntry.COL_title, movieInfo.getTitle());
-        movieValues.put(MovieContract.MovieEntry.COL_releaseDate, movieInfo.getReleaseDate());
-        movieValues.put(MovieContract.MovieEntry.COL_popularity, movieInfo.getPopularity());
-        movieValues.put(MovieContract.MovieEntry.COL_rating, movieInfo.getRating());
-        movieValues.put(MovieContract.MovieEntry.COL_favorite, movieInfo.getFavorite());
-        movieValues.put(MovieContract.MovieEntry.COL_posterPath, movieInfo.getPosterPath());
-        movieValues.put(MovieContract.MovieEntry.COL_overview, movieInfo.getOverview());
-        return movieValues;
+        ContentValues values = new ContentValues();
+        values.put(MovieContract.MovieEntry.COL_id, movieInfo.getMovieId());
+        values.put(MovieContract.MovieEntry.COL_title, movieInfo.getTitle());
+        values.put(MovieContract.MovieEntry.COL_releaseDate, movieInfo.getReleaseDate());
+        values.put(MovieContract.MovieEntry.COL_popularity, movieInfo.getPopularity());
+        values.put(MovieContract.MovieEntry.COL_rating, movieInfo.getRating());
+        values.put(MovieContract.MovieEntry.COL_favorite, movieInfo.getFavorite());
+        values.put(MovieContract.MovieEntry.COL_posterPath, movieInfo.getPosterPath());
+        values.put(MovieContract.MovieEntry.COL_overview, movieInfo.getOverview());
+        return values;
     }
 
     public static ContentValues getMovieVideos(MovieVideoInfo movieVideoInfo) {
-        ContentValues movieValues = new ContentValues();
-        movieValues.put(MovieContract.MovieVideo.COL_id, movieVideoInfo.getId());
-        movieValues.put(MovieContract.MovieVideo.COL_movie_id, movieVideoInfo.getMovieId());
-        movieValues.put(MovieContract.MovieVideo.COL_language, movieVideoInfo.getLanguage());
-        movieValues.put(MovieContract.MovieVideo.COL_name, movieVideoInfo.getName());
-        movieValues.put(MovieContract.MovieVideo.COL_site, movieVideoInfo.getSite());
-        movieValues.put(MovieContract.MovieVideo.COL_size, movieVideoInfo.getSize());
-        movieValues.put(MovieContract.MovieVideo.COL_type, movieVideoInfo.getType());
-        return movieValues;
+        ContentValues values = new ContentValues();
+        values.put(MovieContract.MovieVideo.COL_id, movieVideoInfo.getId());
+        values.put(MovieContract.MovieVideo.COL_movie_id, movieVideoInfo.getMovieId());
+        values.put(MovieContract.MovieVideo.COL_language, movieVideoInfo.getLanguage());
+        values.put(MovieContract.MovieVideo.COL_name, movieVideoInfo.getName());
+        values.put(MovieContract.MovieVideo.COL_site, movieVideoInfo.getSite());
+        values.put(MovieContract.MovieVideo.COL_size, movieVideoInfo.getSize());
+        values.put(MovieContract.MovieVideo.COL_type, movieVideoInfo.getType());
+        return values;
+    }
+
+    public static ContentValues getMovieReviews(MovieReviewInfo movieReviewInfo) {
+        ContentValues values = new ContentValues();
+        values.put(MovieContract.MovieReview.COL_id, movieReviewInfo.getId());
+        values.put(MovieContract.MovieReview.COL_movie_id, movieReviewInfo.getMovieId());
+        values.put(MovieContract.MovieReview.COL_author, movieReviewInfo.getAuthor());
+        values.put(MovieContract.MovieReview.COL_content, movieReviewInfo.getContent());
+        values.put(MovieContract.MovieReview.COL_url, movieReviewInfo.getUrl());
+
+        return values;
     }
 }

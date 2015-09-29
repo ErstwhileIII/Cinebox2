@@ -155,31 +155,4 @@ public class MovieListActivity extends AppCompatActivity
         }
     }
 
-
-    /**
-     * Callback method from {@link MovieListFragmentX.Callbacks}
-     * indicating that the item with the given ID was selected.
-     */
-//    @Override
-//    public void onItemSelected(String id) {
-//        if (isTwoPane) {
-//            // In two-pane mode, show the detail view in this activity by
-//            // adding or replacing the detail fragment using a
-//            // fragment transaction.
-//            Bundle arguments = new Bundle();
-//            arguments.putString(MovieDetailFragmentX.ARG_ITEM_ID, id);
-//            MovieDetailFragmentX fragment = new MovieDetailFragmentX();
-//            fragment.setArguments(arguments);
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.movie_detail_container, fragment)
-//                    .commit();
-//
-//        } else {
-//            // In single-pane mode, simply start the detail activity
-//            // for the selected item ID.
-//            Intent detailIntent = new Intent(this, MovieDetailActivity.class);
-//            detailIntent.putExtra(MovieDetailFragmentX.ARG_ITEM_ID, id);
-//            startActivity(detailIntent);
-//        }
-//    }
 }

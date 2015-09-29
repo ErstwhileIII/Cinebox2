@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.velocikey.android.learning.cinebox2.utility.Utility;
+
 /**
  * Created by Joseph White on 14-Aug-2015
  *
@@ -15,7 +17,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
     // Class fields
     private static final String LOG_TAG = MovieDBHelper.class.getSimpleName();
     // Database information
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 1;
     private static final String CreateMovieinfoTable =
             "CREATE TABLE " + MovieContract.MovieEntry.TABLE_NAME + " (" +
                     MovieContract.MovieEntry.COL_id + " INTEGER PRIMARY KEY ON CONFLICT REPLACE, " +
@@ -63,6 +65,16 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                     MovieContract.MovieVideo.COL_type + " TEXT NOT NULL, " +
                     " FOREIGN KEY (" + MovieContract.MovieVideo.COL_movie_id + ") REFERENCES "
                     + MovieContract.MovieEntry.TABLE_NAME + "(" + MovieContract.MovieEntry.COL_id + "));";
+
+    private static final String CreateMovieReviewTable =
+            "CREATE TABLE " + MovieContract.MovieReview.TABLE_NAME + " (" +
+                    MovieContract.MovieReview.COL_id + " INTEGER PRIMARY KEY ON CONFLICT REPLACE, " +
+                    MovieContract.MovieReview.COL_movie_id + " INTEGER NOT NULL, " +
+                    MovieContract.MovieReview.COL_author + " TEXT NOT NULL, " +
+                    MovieContract.MovieReview.COL_content + " TEXT NOT NULL, " +
+                    MovieContract.MovieReview.COL_url + " TEXT NOT NULL, " +
+                    " FOREIGN KEY (" + MovieContract.MovieReview.COL_movie_id + ") REFERENCES "
+                    + MovieContract.MovieEntry.TABLE_NAME + "(" + MovieContract.MovieEntry.COL_id + "));";
     // Object Fields
     //TODO needed?
     private final Context mContext;
@@ -75,7 +87,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //TODO use utility method to create the table statement
+        //TODO use utility method to create the table statement?
 
         Log.v(LOG_TAG, "-->onCreate: ");
         Log.v(LOG_TAG, "Movie: " + CreateMovieinfoTable);
@@ -86,7 +98,14 @@ public class MovieDBHelper extends SQLiteOpenHelper {
         db.execSQL(CreateMovieFavoriteView);
         Log.v(LOG_TAG, "Video: " + CreateMovieVideoTable);
         db.execSQL(CreateMovieVideoTable);
+        Log.v(LOG_TAG, "Review: " + CreateMovieReviewTable);
+        db.execSQL(CreateMovieReviewTable);
+
+        //TODO ensure that we reload the table .. clear the last loaded flag
+        Utility.setLastQueryTime(mContext, 0L);
+
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -96,7 +115,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieFavorite.TABLE_NAME);
         db.execSQL("DROP VIEW IF EXISTS " + MovieContract.MovieFavorite.VIEW_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieVideo.TABLE_NAME);
-        //db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieFavorite.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieReview.TABLE_NAME);
         onCreate(db);
     }
 
@@ -108,7 +127,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieFavorite.TABLE_NAME);
         db.execSQL("DROP VIEW IF EXISTS " + MovieContract.MovieFavorite.VIEW_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieVideo.TABLE_NAME);
-        //db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieFavorite.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieReview.TABLE_NAME);
         onCreate(db);
     }
 }

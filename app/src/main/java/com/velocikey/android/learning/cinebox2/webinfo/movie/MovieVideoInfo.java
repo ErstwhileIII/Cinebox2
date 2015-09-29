@@ -11,7 +11,7 @@ public class MovieVideoInfo {
     private static final String YOUTUBE_WATCH_PREFIX = "https://www.youtube.com/watch?v=";
     // Object Fields
     private int id;
-    private int movie_id;
+    private int movieId;
     private String language;
     private String key;
     private String name;
@@ -19,9 +19,9 @@ public class MovieVideoInfo {
     private int size;
     private String type;
 
-    public MovieVideoInfo(int id, int movie_id, String language, String key, String name, String site, int size, String type) {
+    public MovieVideoInfo(int id, int movieId, String language, String key, String name, String site, int size, String type) {
         this.id = id;
-        this.movie_id = movie_id;
+        this.movieId = movieId;
         this.language = language;
         this.key = key;
         this.name = name;
@@ -35,7 +35,7 @@ public class MovieVideoInfo {
     }
 
     public int getMovieId() {
-        return movie_id;
+        return movieId;
     }
 
     public String getLanguage() {

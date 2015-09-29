@@ -1,15 +1,27 @@
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="false"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:overScrollMode="ifContentScrolls"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="vertical"
     tools:context="com.velocikey.android.learning.cinebox.webinfo.movie.MovieDetailFragment">
 
     <ImageView
         android:id="@+id/detail_poster"
-        android:layout_width="140dp"
-        android:layout_height="210dp"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_gravity="start"
@@ -88,7 +100,7 @@
 
     <TextView
         android:id="@+id/detail_overview"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/favoriteBar"
@@ -96,3 +108,4 @@
 
 </RelativeLayout>
 
+</ScrollView>

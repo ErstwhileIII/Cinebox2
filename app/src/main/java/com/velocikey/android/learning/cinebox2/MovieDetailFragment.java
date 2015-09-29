@@ -74,7 +74,7 @@ public class MovieDetailFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.v(LOG_TAG, "-->onAttach(Context");
+        Log.v(LOG_TAG, "-->onAttach(Context)");
         handleOnAttach(context);
     }
 
@@ -83,7 +83,6 @@ public class MovieDetailFragment extends Fragment
         super.onAttach(activity);
         Log.v(LOG_TAG, "-->onAttach(Activity)");
         handleOnAttach(activity);
-
     }
 
     @Override
@@ -108,14 +107,15 @@ public class MovieDetailFragment extends Fragment
         if (savedInstanceState == null) {
             Log.v(LOG_TAG, "-->onCreate: savedInstanceState is null");
         } else {
-            Log.v(LOG_TAG, "-->onCreate: savedInstanceState is NOT null");
-            movieId = savedInstanceState.getInt(ARG_movieId);
-            title = savedInstanceState.getString(ARG_title);
-            releaseDate = savedInstanceState.getString(ARG_releaseDate);
-            overview = savedInstanceState.getString(ARG_overview);
-            popularity = savedInstanceState.getFloat(ARG_popularity);
-            rating = savedInstanceState.getFloat((ARG_rating));
-            posterPath = savedInstanceState.getString(ARG_posterPath);
+            Log.v(LOG_TAG, "-->onCreate: savedInstanceState is NOT null (" + savedInstanceState.size() + ")");
+//            movieId = savedInstanceState.getInt(ARG_movieId);
+//            title = savedInstanceState.getString(ARG_title);
+//            releaseDate = savedInstanceState.getString(ARG_releaseDate);
+//            overview = savedInstanceState.getString(ARG_overview);
+//            popularity = savedInstanceState.getFloat(ARG_popularity);
+//            rating = savedInstanceState.getFloat((ARG_rating));
+//            posterPath = savedInstanceState.getString(ARG_posterPath);
+//            Log.v(LOG_TAG, "title = " + title);
         }
     }
 

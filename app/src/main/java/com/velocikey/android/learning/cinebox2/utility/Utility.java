@@ -33,8 +33,13 @@ public class Utility {
         return lastQuery;
     }
 
-    public static void setLastQueryInfo(Context context, String queryOrder, long queryTime) {
+    public static void setLastQueryTime(Context context, long queryTime) {
+        SharedPreferences.Editor preferenceEditor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        preferenceEditor.putLong(context.getString(R.string.pref_last_query_time), queryTime);
+        preferenceEditor.commit();
+    }
 
+    public static void setLastQueryInfo(Context context, String queryOrder, long queryTime) {
         SharedPreferences.Editor preferenceEditor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         preferenceEditor.putString(context.getString(R.string.pref_last_query_order), queryOrder);
         preferenceEditor.putLong(context.getString(R.string.pref_last_query_time), queryTime);

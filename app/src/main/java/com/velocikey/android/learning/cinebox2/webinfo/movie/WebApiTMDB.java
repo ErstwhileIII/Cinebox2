@@ -162,7 +162,7 @@ public class WebApiTMDB extends WebApi {
         JSONObject videoList;
         ArrayList<MovieVideoInfo> results = new ArrayList<>(1);
 
-        // form the TMDB query to get videos for the movie
+        // form the TMDB query to get videos for the movie videos
         Uri getVideosUri = Uri.parse(GET_MOVIE_VIDEOS + movieId + "/videos?").buildUpon()
                 .appendQueryParameter(API_KEY_NAME, API_KEY_VALUE)
                 .build();

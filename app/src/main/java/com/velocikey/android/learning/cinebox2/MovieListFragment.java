@@ -612,9 +612,13 @@ public class MovieListFragment extends Fragment
 
             Log.v(LOG_TAG, "About to get a loader manager");
             getLoaderManager().initLoader(0, null, myMovieListFragment);
-            //TODO how to update cursor
         }
 
+        /**
+         * Add or replace information in the movie database.
+         *
+         * @param movieInfo movie information
+         */
         private void updateMovieInfo(ArrayList<MovieInfo> movieInfo) {
             ContentValues[] movieContentValues = new ContentValues[movieInfo.size()];
             for (int i = 0; i < movieInfo.size(); i++) {

@@ -6,42 +6,42 @@ package com.velocikey.android.learning.cinebox2.webinfo.movie;
 public class MovieReviewInfo {
     // Class fields
     private static final String LOG_TAG = MovieReviewInfo.class.getSimpleName();
-    private static final String YOUTUBE_WATCH_PREFIX = "https://www.youtube.com/watch?v=";
+    private static final String MOVIE_REVIEW_PREFIX = "https://www.themoviedb.com/review/";
     // Object Fields
-    private String id;
+    private int id;
     private String author;
     private String content;
     private String url;
-    private String movie_id;
+    private int movieId;
 
 
-    public MovieReviewInfo(String id, String author, String content, String url, String movie_id) {
+    public MovieReviewInfo(int id, String author, String content, String url, int movieId) {
         this.id = id;
         this.author = author;
         this.content = content;
         this.url = url;
-        //TODO should we add movie information here
-        this.movie_id = movie_id;
+        this.movieId = movieId;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
     public String getAuthor() {
         return author;
     }
-
     public String getContent() {
         return content;
     }
-
     public String getUrl() {
         return url;
     }
 
     public String getWebPath() {
-        String result = "https://www.themoviedb.com/review/" + id;
-        return result;
+        return MOVIE_REVIEW_PREFIX + id;
+    }
+
+    public int getMovieId() {
+        return movieId;
     }
 }

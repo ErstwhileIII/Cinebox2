@@ -129,5 +129,29 @@ public class MovieContract {
         public static final String COL_type = "type";
     }
 
+    public static final class MovieReview implements BaseColumns {
+
+        public static final String PATH = PATH_MOVIE_REVIEW;
+        public static final String TABLE_NAME = "movie_reviews";
+        // information for Provider to use
+        public static final Uri CONTENT_URI =
+                CONTENT_URI_BASE.buildUpon().appendPath(PATH).build();
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH;
+
+
+        /**
+         * Unique
+         */
+        public static final String COL_id = BaseColumns._ID;
+        public static final String COL_movie_id = "movie_id";
+        public static final String COL_author = "author";
+        public static final String COL_content = "content";
+        public static final String COL_url = "url";
+    }
+
     //TODO add methods that extract information from the URIs
+
 }
