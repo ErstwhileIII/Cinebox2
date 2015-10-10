@@ -196,20 +196,23 @@ public class MovieDetailFragment extends Fragment
             //TODO change user favorite rating
             Log.v(LOG_TAG, "New user rating is: " + rating);
             ContentValues changeRating = new ContentValues();
-            changeRating.put(MovieContract.MovieEntry.COL_rating, rating);
-            String[] whereClause = new String[1];
-            whereClause[0] = Integer.toString(movieId);
+            changeRating.put(MovieContract.MovieFavorite.COL_id, movieId);
+            changeRating.put(MovieContract.MovieFavorite.COL_favorite, rating);
 
-            //Uri uri = Uri.parse("content://" + MovieContract.CONTENT_AUTHORITY + "/" + MovieContract.PATH_MOVIE + "/" + movieId);
-            Uri uri = MovieContract.MovieEntry.buildMovieUri(movieId);
+            Uri uri = MovieContract.MovieFavorite.buildMovieUri(movieId);
             Log.v(LOG_TAG, " ... try update using " + uri.toString());
-            int numRows = getActivity().getContentResolver().update(uri,
-                    changeRating,
-                    MovieContract.MovieEntry.COL_id,
-                    whereClause
-            );
-            Log.v(LOG_TAG, " ... rows updated count=" + numRows);
-            //TODO trigger a "requery"
+            Log.v(LOG_TAG, "content = " + changeRating.toString());
+
+            Uri insertedUri = getActivity().getContentResolver().insert(uri, changeRating);
+
+
+            if (insertedUri == null) {
+                Log.v(LOG_TAG, "insert favorite returned null");
+            } else {
+                Log.v(LOG_TAG, " ... rows inserted =" + insertedUri.toString());
+            }
+            //TODO trigger a "requery" on main movie query
+
         }
     }
 

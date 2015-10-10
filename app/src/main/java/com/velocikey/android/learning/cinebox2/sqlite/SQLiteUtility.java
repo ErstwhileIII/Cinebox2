@@ -29,6 +29,12 @@ class SQLiteUtility {
         return movieQueryBuilder;
     }
 
+    /**
+     * Create a UriMatcher from a list of all the uris to match
+     *
+     * @param matches table of Authority, path, and code (integer) for each uri
+     * @return UriMatcher for each of the possible matches (including NO_MATCH)
+     */
     public static UriMatcher instanceUriMatcher(String[][] matches) {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         for (String[] match : matches) {

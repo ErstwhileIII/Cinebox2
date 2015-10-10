@@ -74,6 +74,7 @@ public class MovieProvider extends ContentProvider {
     public boolean onCreate() {
         Log.v(LOG_TAG, "-->onCreate:");
         mMovieDBHelper = new MovieDBHelper(getContext());
+        Log.v(LOG_TAG, "matcher:" + sUriMatcher.toString());
         return true;
     }
 
@@ -145,7 +146,14 @@ public class MovieProvider extends ContentProvider {
                 break;
             case MOVIE_LIST_ID:
                 builder.setTables(MovieContract.MovieEntry.TABLE_NAME);
-                builder.appendWhere(MovieContract.MovieEntry._ID + " = " + uri.getLastPathSegment());
+                builder.appendWhere(MovieContract.MovieEntry.COL_id + " = " + uri.getLastPathSegment());
+                break;
+            case MOVIE_FAVORITE:
+                builder.setTables(MovieContract.MovieFavorite.TABLE_NAME);
+                break;
+            case MOVIE_FAVORITE_ID:
+                builder.setTables(MovieContract.MovieFavorite.TABLE_NAME);
+                builder.appendWhere(MovieContract.MovieFavorite.COL_id + " = " + uri.getLastPathSegment());
                 break;
             default:
                 Log.e(LOG_TAG, "query: unsupported URI " + uri);
@@ -201,6 +209,7 @@ public class MovieProvider extends ContentProvider {
         switch (match) {
             case MOVIE_LIST:
                 rowId = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, values);
+                db.close();
                 Log.v(LOG_TAG, "insert: rowid is " + rowId
                         + ", Movie ID is " + values.getAsString(MovieContract.MovieEntry._ID));
 
@@ -214,6 +223,11 @@ public class MovieProvider extends ContentProvider {
                     Log.v(LOG_TAG, "no ContentResolver, so no need to notify of change");
                 }
                 return insertedUri;
+            case MOVIE_FAVORITE_ID:
+                rowId = db.insert(MovieContract.MovieFavorite.TABLE_NAME, null, values);
+                db.close();
+                Log.v(LOG_TAG, "inserted favorite: " + rowId);
+                return ContentUris.withAppendedId(uri, rowId);
             default:
                 return null;
         }
@@ -330,13 +344,23 @@ public class MovieProvider extends ContentProvider {
                 rowsAffected = db.update(MovieContract.MovieEntry.TABLE_NAME,
                         values, MovieContract.MovieEntry._ID + " = " + uri.getLastPathSegment(), null);
                 break;
+            case MOVIE_FAVORITE_ID:
+                rowsAffected = db.update(MovieContract.MovieFavorite.TABLE_NAME,
+                        values, MovieContract.MovieFavorite.COL_id + " = " + uri.getLastPathSegment(), null);
+                break;
             default:
-                Log.e(LOG_TAG, "query: unsupported URI " + uri);
+                Log.e(LOG_TAG, "update: unsupported URI " + uri);
                 rowsAffected = 0;
         }
         db.close();
         return rowsAffected;
     }
+//    private int doUpdate(String table, ContentValues values, String whereClause, String[] whereArgs) {
+//        SQLiteDatabase db = mMovieDBHelper.getWritableDatabase();
+//        int rowsAffected = db.update(table, values, whereClause, whereArgs);
+//        db.close();
+//        return rowsAffected;
+//    }
 
 
 }

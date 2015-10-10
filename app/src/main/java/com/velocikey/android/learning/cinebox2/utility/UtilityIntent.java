@@ -15,7 +15,7 @@ public class UtilityIntent {
 
     /**
      * Creates and starts an intent to view the item specified by the viewTarget string,
-     * letting the use choose which application should hand the viewing.
+     * letting the user choose which application should hand the viewing.
      *
      * @param context    parent Activity from which to launch the intent
      * @param viewTarget string for the item to be viewed (uri)
@@ -29,7 +29,7 @@ public class UtilityIntent {
      * letting the use choose which application should hand the viewing.
      *
      * @param context    parent Activity from which to launch the intent
-     * @param viewTarget string for the item to be viewed (uri)
+     * @param viewTarget item to be viewed (uri)
      */
     public static void startIntent(Context context, Uri viewTarget) {
         Log.v(LOG_TAG, "starting an intent to view " + viewTarget.toString() + " for " + context.getPackageName());
