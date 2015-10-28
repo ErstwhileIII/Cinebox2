@@ -33,9 +33,6 @@ import com.velocikey.android.learning.cinebox2.webinfo.movie.data.MovieProvider;
 
 import java.util.ArrayList;
 
-//import android.app.LoaderManager;
-//import android.content.CursorLoader;
-//import android.content.Loader;
 
 
 /**
@@ -361,7 +358,7 @@ public class MovieListFragment extends Fragment
     @Override
     public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.v(LOG_TAG, "--> onCreateLoader");
-        //TODO extend to more than one loader, so ignore id for now
+
         switch (id) {
             case CURSORLOADER_MovieInfo:
                 return getCursorMovieInfo();
@@ -371,6 +368,9 @@ public class MovieListFragment extends Fragment
                 return getCursorMovieNoReviews();
             default:
                 Log.e(LOG_TAG, "Unrecognized loader id: " + id);
+//                String bad = null;
+//                bad.charAt(2);
+//                Log.e(LOG_TAG, "onCreateLoader: tried to generate stacktrace");
         }
         return getCursorMovieInfo();
     }
@@ -605,13 +605,12 @@ public class MovieListFragment extends Fragment
         @Override
         protected void onPostExecute(ArrayList<MovieInfo> result) {
             Log.v(LOG_TAG, "-->onPostExecute: ");
-
             updateMovieInfo(result);
             Utility.setLastQueryInfo(mContext, mMovieOrder, System.currentTimeMillis());
             isLoadingMoviesFromWeb = false;
 
             Log.v(LOG_TAG, "About to get a loader manager");
-            getLoaderManager().initLoader(0, null, myMovieListFragment);
+            getLoaderManager().initLoader(CURSORLOADER_MovieInfo, null, myMovieListFragment);
         }
 
         /**
@@ -631,7 +630,7 @@ public class MovieListFragment extends Fragment
 
             int x = resolver.bulkInsert(MovieContract.MovieEntry.CONTENT_URI, movieContentValues);
             Log.v(LOG_TAG, "finished bulkInsert with count = " + x);
-            //TODO wait for insert to complete
+
         }
     }
 }
